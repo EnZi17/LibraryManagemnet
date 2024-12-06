@@ -30,17 +30,17 @@ public class AppController implements ActionListener {
 		// TODO Auto-generated method stub
 		String src = e.getActionCommand();
 		switch (src) {
-		case "Add Book": {
+		case "Add": {
 			addBookManagement();
 			updateData();
 			break;
 		}
-		case "Delete Book":{
+		case "Delete":{
 			deleteBookManagement();
 			updateData();
 			break;
 		}
-		case "Update Book":{
+		case "Update":{
 			updateBookManagement();
 			updateData();
 			break;
@@ -61,9 +61,10 @@ public class AppController implements ActionListener {
 			
 		}
 	}
+	
 
 	private void deleteBookManagement() {
-		if(this.appView.showDeleteBookConform()==1) {
+		if(this.appView.showDeleteConform()==1) {
 			String id = this.appView.bookPanel.bookTable.getValueAt(this.appView.bookPanel.row, 1).toString();
 			bookDAO.deleteBook(id);
 			this.appView.bookPanel.idTextField.setText("");
@@ -104,34 +105,14 @@ public class AppController implements ActionListener {
 	public void updateData() {
 		
 		books=bookDAO.getBooks();
-		Object[][] data = new Object[books.size()][4];
-		String[] columNames = {"s.No","ID","Title","Price"};
+		this.appView.bookPanel.defaultTableModel.setRowCount(books.size());
 		for(int i=0;i<books.size();i++) {
-			Book book = books.get(i);
-			data[i][0]=i+1;
-			data[i][1]=book.getId();
-			data[i][2]=book.getTitle();
-			data[i][3]=book.getPrice();
+			this.appView.bookPanel.bookTable.setValueAt(i+1, i, 0);
+			this.appView.bookPanel.bookTable.setValueAt(books.get(i).getId(), i, 1);
+			this.appView.bookPanel.bookTable.setValueAt(books.get(i).getTitle(), i, 2);
+			this.appView.bookPanel.bookTable.setValueAt(books.get(i).getPrice(), i, 3);
+			this.appView.bookPanel.bookTable.setValueAt(books.get(i).isBorowed(), i, 4);
 		}
-		
-		DefaultTableModel defaultTableModel = new DefaultTableModel(data,columNames);
-		
-		this.appView.bookPanel.bookTable.setModel(defaultTableModel);
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(defaultTableModel);
-		this.appView.bookPanel.bookTable.setRowSorter(sorter);
-		
-		this.appView.bookPanel.findBookTextField.addKeyListener(new KeyAdapter() {
-			
-	    	  public void keyReleased(KeyEvent e) {
-	    		  String search=appView.bookPanel.findBookTextField.getText().trim();
-		    	  if(search.isEmpty()) {
-		    		  sorter.setRowFilter(null);
-		    	  }else {
-		    		  sorter.setRowFilter(RowFilter.regexFilter("(?i)"+search, 2));
-		    		  
-		    	  }
-	            }
-		});
 	}
     
 }

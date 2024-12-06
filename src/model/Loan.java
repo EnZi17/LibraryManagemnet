@@ -20,6 +20,19 @@ public class Loan {
 		this.returnDate = returnDate;
 	}
 	
+	
+	
+	public Loan(String name, String phoneNumber, String bookId, Date borrowedDate, Date returnDate) {
+		super();
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.bookId = bookId;
+		this.borrowedDate = borrowedDate;
+		this.returnDate = returnDate;
+	}
+
+
+
 	public Loan() {
 		super();
 	}

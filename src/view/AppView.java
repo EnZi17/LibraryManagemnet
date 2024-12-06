@@ -12,6 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.checkerframework.common.returnsreceiver.qual.This;
 
 import controller.AppController;
+import controller.BorrowerController;
 
 
 public class AppView {
@@ -19,13 +20,16 @@ public class AppView {
     public JFrame frame;
     public BookPanel bookPanel ;
     public BorrowerPanel borrowerPanel;
+    public AppController appController;
+    public BorrowerController borrowerController;
 
     public AppView() {
-    	AppController appController = new AppController(this);
+    	appController = new AppController(this);
+    	borrowerController = new BorrowerController(this);
     	
     	
         frame = new JFrame();
-        frame.setBounds(100, 100, 850, 320);
+        frame.setBounds(100, 100, 1200, 450);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
@@ -36,10 +40,12 @@ public class AppView {
         tabbedPane.addTab("Book", this.bookPanel);
         
         
-        JPanel borrowerPanel = new JPanel();
-        tabbedPane.addTab("Borrower", new BorrowerPanel(appController));
+        this.borrowerPanel = new BorrowerPanel(borrowerController);
+        tabbedPane.addTab("Borrower", this.borrowerPanel);
         
         appController.updateData();
+        borrowerController.updateData();
+        borrowerController.resetInput();
         this.frame.setVisible(true);
         
         try {
@@ -76,9 +82,17 @@ public class AppView {
 		JOptionPane.showMessageDialog(null, "Please Select Book!","Error!",JOptionPane.ERROR_MESSAGE);
 	}
 
-	public int showDeleteBookConform() {
+	public int showDeleteConform() {
 		int res = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this item?", "Confirm Deletion", JOptionPane.YES_NO_OPTION,  JOptionPane.WARNING_MESSAGE);
 		return (res==JOptionPane.YES_OPTION)?1:0;
+	}
+
+	public void showBookNotExist() {
+		JOptionPane.showMessageDialog(null, "Book ID isn't existed!","Error!",JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void showBookHasBeenBorrowed() {
+		JOptionPane.showMessageDialog(null, "This Book Is Already Borrowed!","Error!",JOptionPane.ERROR_MESSAGE);
 	}
     
 }

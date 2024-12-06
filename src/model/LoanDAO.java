@@ -1,8 +1,12 @@
 package model;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
 import com.mongodb.client.MongoCollection;
-import until.MongoDBConnection;
+
+import myUtil.MongoDBConnection;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,7 +45,8 @@ public class LoanDAO {
     }
 
     public void deleteLoan(String id) {
-        Document query = new Document("_id", id);
+    	ObjectId objectId = new ObjectId(id);
+        Document query = new Document("_id", objectId);
         collection.deleteOne(query);
     }
     
@@ -58,5 +63,11 @@ public class LoanDAO {
 			System.out.println(loan.toString());
 		}
 	}
+    
+    public String findBookIDByID(String id) {
+    	ObjectId objectId = new ObjectId(id);
+        Document query = new Document("_id", objectId);
+        return collection.find(query).first().getString("bookId");
+    }
     
 }

@@ -5,6 +5,9 @@ public class Book {
 	private String id;
 	private String title;
 	private double price;
+	private boolean isBorowed;
+	
+	
 	
 	public String getId() {
 		return id;
@@ -15,10 +18,6 @@ public class Book {
 	public String getTitle() {
 		return title;
 	}
-	@Override
-	public String toString() {
-		return "Book [id=" + id + ", title=" + title + ", price=" + price + "]";
-	}
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -28,12 +27,22 @@ public class Book {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	
+	public boolean isBorowed() {
+		return isBorowed;
+	}
+	public void setBorowed(boolean isBorowed) {
+		this.isBorowed = isBorowed;
+	}
 	public Book(String id, String title, double price) {
 		super();
+		this.isBorowed=false;
 		this.id = id;
 		this.title = title;
 		this.price = price;
+	}
+	@Override
+	public String toString() {
+		return "Book [id=" + id + ", title=" + title + ", price=" + price + ", isBorowed=" + isBorowed + "]";
 	}
 	public Book() {
 		super();
@@ -41,4 +50,6 @@ public class Book {
 	public boolean isNull() {
 		return this.id==null;
 	}
+	
+	
 }
