@@ -70,4 +70,20 @@ public class LoanDAO {
         return collection.find(query).first().getString("bookId");
     }
     
+    public void updateLoan(String id,Loan loan) {
+    	 Document document = new Document()
+         		.append("name", loan.getName())
+                 .append("phoneNumber", loan.getPhoneNumber())
+                 .append("bookId", loan.getBookId())
+                 .append("borrowedDate", loan.getBorrowedDate())
+                 .append("returnDate", loan.getReturnDate());
+    	ObjectId objectId = new ObjectId(id);
+    	Document query = new Document("_id", objectId);
+    	Document update = new Document("$set",document);
+    	collection.updateOne(query,update);
+    	System.out.println(1);
+    }
+
+	
+    
 }

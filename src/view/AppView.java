@@ -22,6 +22,7 @@ public class AppView {
     public BorrowerPanel borrowerPanel;
     public AppController appController;
     public BorrowerController borrowerController;
+    public JTabbedPane tabbedPane;
 
     public AppView() {
     	appController = new AppController(this);
@@ -33,7 +34,7 @@ public class AppView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
         frame.getContentPane().add(tabbedPane);
         
         this.bookPanel = new BookPanel(appController);
@@ -79,7 +80,7 @@ public class AppView {
 	}
 
 	public void showNotSelected() {
-		JOptionPane.showMessageDialog(null, "Please Select Book!","Error!",JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Please Select Item!","Error!",JOptionPane.ERROR_MESSAGE);
 	}
 
 	public int showDeleteConform() {

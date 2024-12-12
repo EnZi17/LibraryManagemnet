@@ -45,12 +45,28 @@ public class AppController implements ActionListener {
 			updateData();
 			break;
 		}
+		case "Lend":{
+			lendBookManagement();
+			break;
+		}
 		
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + src);
 		}
 	}
 	
+	private void lendBookManagement() {
+		if(this.appView.bookPanel.row==-1) {
+			this.appView.showNotSelected();
+		}else {
+			
+			this.appView.tabbedPane.setSelectedIndex(1);
+			String id = this.appView.bookPanel.idTextField.getText();
+			resetData();
+			this.appView.borrowerPanel.idTextField.setText(id);
+		}
+	}
+
 	private void updateBookManagement() {
 		if(this.appView.bookPanel.row==-1) {
 			this.appView.showNotSelected();
@@ -67,11 +83,17 @@ public class AppController implements ActionListener {
 		if(this.appView.showDeleteConform()==1) {
 			String id = this.appView.bookPanel.bookTable.getValueAt(this.appView.bookPanel.row, 1).toString();
 			bookDAO.deleteBook(id);
-			this.appView.bookPanel.idTextField.setText("");
-			this.appView.bookPanel.titleTextField.setText("");
-			this.appView.bookPanel.priceTextField.setText("");
+			resetData();
 		}
 		
+	}
+
+	private void resetData() {
+		this.appView.bookPanel.idTextField.setText("");
+		this.appView.bookPanel.titleTextField.setText("");
+		this.appView.bookPanel.priceTextField.setText("");
+		this.appView.bookPanel.bookTable.clearSelection();
+		this.appView.bookPanel.row=-1;
 	}
 
 	private void addBookManagement() {

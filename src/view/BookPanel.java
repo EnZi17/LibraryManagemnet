@@ -30,6 +30,7 @@ public class BookPanel extends JPanel {
     public int row = -1;
     public JTextField findBookTextField;
     public DefaultTableModel defaultTableModel;
+    public TableRowSorter<DefaultTableModel> sorter;
 
     public BookPanel(AppController appController) {
         this.appController = appController;
@@ -61,7 +62,7 @@ public class BookPanel extends JPanel {
         leftPanel.add(inputPanel, BorderLayout.CENTER);
 
         // Button
-        JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         JButton addButton = new JButton("Add");
         addButton.addActionListener(this.appController);
         buttonPanel.add(addButton);
@@ -71,6 +72,9 @@ public class BookPanel extends JPanel {
         JButton deleteButton = new JButton("Delete");
         deleteButton.addActionListener(this.appController);
         buttonPanel.add(deleteButton);
+        JButton lendButton = new JButton("Lend");
+        lendButton.addActionListener(appController);
+        buttonPanel.add(lendButton);
         leftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         // Table
@@ -97,7 +101,7 @@ public class BookPanel extends JPanel {
         rightPanel.add(scrollPane, BorderLayout.CENTER);
 
         // Table search 
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(defaultTableModel);
+        sorter = new TableRowSorter<>(defaultTableModel);
         bookTable.setRowSorter(sorter);
         findBookTextField.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {

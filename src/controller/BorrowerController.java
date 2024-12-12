@@ -35,6 +35,7 @@ public class BorrowerController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String src = e.getActionCommand();
+		
 		switch (src) {
 		case "Add": {
 			addManagement();
@@ -51,19 +52,69 @@ public class BorrowerController implements ActionListener {
 			updateData();
 			break;
 		}
+		case "Late Return Filter":{
+			lateFilterManagement();
+			break;
+		}
 		
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + src);
 		}
 	}
 	
+	private void lateFilterManagement() {
+		if(this.appView.borrowerPanel.lateFilter.isSelected()) {
+			this.appView.borrowerPanel.sorter.setRowFilter(new RowFilter<>(){
+
+				@Override
+				public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
+					String dateString= (String) entry.getValue(6);
+					Date returnedDate= myUtil.Util.StringToDate(dateString);
+					Date curentDate = new Date();
+					
+					return returnedDate.before(curentDate);
+				}
+				
+			});
+		}else {
+			this.appView.borrowerPanel.sorter.setRowFilter(null);
+		}
+	}
+
 	private void updateManagement() {
 		if(this.appView.borrowerPanel.row==-1) {
 			this.appView.showNotSelected();
 		}else {
-			String id = this.appView.bookPanel.bookTable.getValueAt(this.appView.bookPanel.row, 1).toString();
-			bookDAO.deleteBook(id);
-			addManagement();
+			String id = this.appView.borrowerPanel.table.getValueAt(this.appView.borrowerPanel.row, 1).toString();
+			
+			String name = appView.borrowerPanel.nameTextField.getText();
+			String phone = appView.borrowerPanel.phoneTextField.getText();
+			String bookId = appView.borrowerPanel.idTextField.getText();
+			String borrowedDay=appView.borrowerPanel.borrowPanel.dayComboBox.getSelectedItem().toString();
+			if(appView.borrowerPanel.borrowPanel.dayComboBox.getSelectedIndex()+1<10) {
+				borrowedDay="0"+borrowedDay;
+			}
+			String borrowedMonth=String.valueOf(appView.borrowerPanel.borrowPanel.monthComboBox.getSelectedIndex()+1);
+			if(appView.borrowerPanel.borrowPanel.monthComboBox.getSelectedIndex()+1<10) {
+				borrowedMonth="0"+borrowedMonth;
+			}
+			String borrowedYear=appView.borrowerPanel.borrowPanel.yearComboBox.getSelectedItem().toString();
+			String returnDay=appView.borrowerPanel.returnPanel.dayComboBox.getSelectedItem().toString();
+			if(appView.borrowerPanel.returnPanel.dayComboBox.getSelectedIndex()+1<10) {
+				returnDay="0"+returnDay;
+			}
+			String returnMonth=String.valueOf(appView.borrowerPanel.returnPanel.monthComboBox.getSelectedIndex()+1);
+			if(appView.borrowerPanel.returnPanel.monthComboBox.getSelectedIndex()+1<10) {
+				returnMonth="0"+returnMonth;
+			}
+			String returnYear=appView.borrowerPanel.returnPanel.yearComboBox.getSelectedItem().toString();
+			
+			
+			String borowedDate = borrowedDay+"-"+borrowedMonth+"-"+borrowedYear;
+			String returnDate = returnDay+"-"+returnMonth+"-"+returnYear;
+			
+			loanDAO.updateLoan(id,new Loan(name,phone,bookId,myUtil.Util.StringToDate(borowedDate),myUtil.Util.StringToDate(returnDate)));
+			
 			
 		}
 	}
@@ -163,11 +214,11 @@ public class BorrowerController implements ActionListener {
 		Calendar calendar = Calendar.getInstance();
 		this.appView.borrowerPanel.borrowPanel.dayComboBox.setSelectedIndex(calendar.getTime().getDate()-1);
 		this.appView.borrowerPanel.borrowPanel.monthComboBox.setSelectedIndex(calendar.getTime().getMonth());
-		this.appView.borrowerPanel.borrowPanel.yearComboBox.setSelectedIndex(calendar.getTime().getYear()+1901);
+		this.appView.borrowerPanel.borrowPanel.yearComboBox.setSelectedIndex(calendar.getTime().getYear()+1899);
 		calendar.add(Calendar.DAY_OF_MONTH,14);
 		this.appView.borrowerPanel.returnPanel.dayComboBox.setSelectedIndex(calendar.getTime().getDate()-1);
 		this.appView.borrowerPanel.returnPanel.monthComboBox.setSelectedIndex(calendar.getTime().getMonth());
-		this.appView.borrowerPanel.returnPanel.yearComboBox.setSelectedIndex(calendar.getTime().getYear()+1901);
+		this.appView.borrowerPanel.returnPanel.yearComboBox.setSelectedIndex(calendar.getTime().getYear()+1899);
 		
 	}
     

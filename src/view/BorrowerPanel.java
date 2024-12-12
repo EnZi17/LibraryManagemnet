@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
@@ -38,6 +39,8 @@ public class BorrowerPanel extends JPanel {
 	public DefaultTableModel defaultTableModel;
 	public DatePanel borrowPanel;
 	public DatePanel returnPanel;
+	public JRadioButton lateFilter;
+	public TableRowSorter<DefaultTableModel> sorter ;
 
     public BorrowerPanel(BorrowerController appController) {
         this.appController = appController;
@@ -47,7 +50,7 @@ public class BorrowerPanel extends JPanel {
         JPanel leftPanel = new JPanel(new BorderLayout(10, 10));
         JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
         
-        
+        //Search
         JPanel searchPanel = new JPanel(new GridLayout(1, 1, 10, 10));
         findTextField = new JTextField();
         findTextField.setPreferredSize(new Dimension(250, 30));
@@ -55,7 +58,7 @@ public class BorrowerPanel extends JPanel {
         searchPanel.add(findTextField);
         leftPanel.add(searchPanel, BorderLayout.NORTH);
 
-       
+       //Input
         JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         inputPanel.add(new JLabel("Name"));
         nameTextField = new JTextField();
@@ -74,8 +77,8 @@ public class BorrowerPanel extends JPanel {
         inputPanel.add(returnPanel);
         leftPanel.add(inputPanel, BorderLayout.CENTER);
 
-        
-        JPanel buttonPanel = new JPanel(new GridLayout(3, 1, 10, 10));
+        //Button
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         JButton addButton = new JButton("Add");
         addButton.addActionListener(this.appController);
         buttonPanel.add(addButton);
@@ -85,6 +88,11 @@ public class BorrowerPanel extends JPanel {
         JButton deleteButton = new JButton("Delete");
         deleteButton.addActionListener(this.appController);
         buttonPanel.add(deleteButton);
+        lateFilter = new JRadioButton("Late Return Filter");
+        lateFilter.addActionListener(this.appController);
+        buttonPanel.add(lateFilter);
+       
+       
         
         leftPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -113,7 +121,7 @@ public class BorrowerPanel extends JPanel {
 		
 		
 			//Table Search
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(defaultTableModel);
+		sorter = new TableRowSorter<>(defaultTableModel);
 		table.setRowSorter(sorter);
 		
 		findTextField.addKeyListener(new KeyAdapter() {
